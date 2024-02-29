@@ -11,6 +11,9 @@
 # A 'Fog Creek'–inspired demo by Kenneth Reitz™
 
 import os
+os.system('pip install flask')
+os.system('pip install dotenv')
+os.system('pip install autogenstudio')
 from flask import Flask, request, render_template, jsonify
 import test
 from dotenv import load_dotenv, find_dotenv
@@ -29,8 +32,7 @@ app = Flask(__name__, static_folder='public', template_folder='views')
 
 
 
-load_dotenv('/.gitignore/.env')
-
+load_dotenv('appauto2/.gitignore/.env')
 
 
 # Set the app secret key from the secret environment variables.
@@ -101,7 +103,7 @@ def dreams_get():
 
 
 # load an agent specification in JSON
-agent_spec = json.load(open('configlist.json'))
+agent_spec = json.load(open('appauto2/configlist.json'))
 
 # Create an AutoGen Workflow Configuration from the agent specification
 agent_work_flow_config = AgentWorkFlowConfig(**agent_spec)
