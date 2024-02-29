@@ -12,7 +12,7 @@
 
 import os
 os.system('pip install flask')
-os.system('pip install dotenv')
+#os.system('pip install dotenv')
 os.system('pip install autogenstudio')
 from flask import Flask, request, render_template, jsonify
 import test
@@ -32,7 +32,7 @@ app = Flask(__name__, static_folder='public', template_folder='views')
 
 
 
-load_dotenv('appauto2/.gitignore/.env')
+#load_dotenv('appauto2/.gitignore/.env')
 
 
 # Set the app secret key from the secret environment variables.
