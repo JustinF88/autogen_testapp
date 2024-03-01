@@ -34,7 +34,6 @@ app = Flask(__name__, static_folder='public', template_folder='views')
 
 #load_dotenv('appauto2/.gitignore/.env')
 
-
 # Set the app secret key from the secret environment variables.
 app.secret = os.environ.get('SECRET')
 
@@ -98,12 +97,13 @@ def dreams_get():
     # Return the list of remembered dreams. 
     return jsonify(DREAMS)
 
-
-
-
+#load config file and replace text with key information
+text = None
+with open('appauto2/configlist.json') as r:
+  text = r.read().replace("<OPEN_API_KEY>", os.environ.get('OPEN_API_KEY'))
 
 # load an agent specification in JSON
-agent_spec = json.load(open('appauto2/configlist.json'))
+agent_spec = json.loads(text)
 
 # Create an AutoGen Workflow Configuration from the agent specification
 agent_work_flow_config = AgentWorkFlowConfig(**agent_spec)
