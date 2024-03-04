@@ -11,7 +11,7 @@
 # A 'Fog Creek'–inspired demo by Kenneth Reitz™
 
 import os
-os.system('pip install flask')
+os.system('pip install flask[async]')
 #os.system('pip install dotenv')
 os.system('pip install autogenstudio')
 from flask import Flask, request, render_template, jsonify
@@ -22,6 +22,7 @@ import json
 from autogenstudio import AutoGenWorkFlowManager
 from autogenstudio import AgentWorkFlowConfig
 import time
+import asyncio
 
 
 

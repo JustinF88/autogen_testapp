@@ -6,4 +6,5 @@ python3 server.py
 
 pip3 install python-dotenv
 pip3 install pyautogen
+pip3 install flask[async]
 
