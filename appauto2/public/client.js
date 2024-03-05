@@ -13,6 +13,7 @@ $(function() {
   //  });
   //});
 
+/* No longer using this, combined to post/ get functionality to 1 function
   function get_func(){
   $.get('/dreams_get').done(function(dreams) {
     console.log("these are the dreams" );
@@ -20,20 +21,27 @@ $(function() {
     dreams.forEach(function(dream) {
     $('<li></li>').text(dream).appendTo('ul#dreams');
 
-
-      
     });
   });   
   }; // end of get_func
 
-
+*/
 
   $('form').submit(function(event) {
     event.preventDefault();
     dream = $('input').val();
     console.log("this is the dream");
     console.log(dream);
-    $.post('/dreams?' + $.param({'dream': dream})).done(get_func())
+    $.post('/dreams?' + $.param({'dream': dream})).done(function(dreams) {
+      console.log("these are the dreams" );
+      console.log(dreams);
+      dreams.forEach(function(dream) {
+      $('<li></li>').text(dream).appendTo('ul#dreams');
+  
+  
+        
+      });
+    })
   
   
 

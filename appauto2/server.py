@@ -68,28 +68,36 @@ def homepage():
 def rlol():
     return jsonify(test.lol())
   
+
+'''No longer using this
+@app.get('/dreams_get')
+def dreams_get():
+    DREAMS_get = []
+    #time.sleep(10)
+    #for i in DREAMS:
+    #    if i == 'TERMINATE':
+    #        DREAMS.remove(i)
+    #if "TERMINATE" in DREAMS: DREAMS.remove("TERMINATE")
+
+    for i, x in enumerate(agent_work_flow.agent_history):
+        DREAMS_get.append(agent_work_flow.agent_history[i]["message"]["content"])
+
+    print("the dream does equal = = ",DREAMS_get)
+    agent_work_flow.agent_history.clear()
+    # Return the list of remembered dreams. 
+    return jsonify(DREAMS_get)
+'''
+
 @app.route('/dreams', methods=['POST'])
 def dreams():
     """Simple API endpoint for dreams. 
     In memory, ephemeral, like real dreams.
     """
-
+    DREAMS_get = []
     # Add a dream to the in-memory database, if given. 
     if 'dream' in request.args:
         task_query = request.args['dream']
         agent_work_flow.run(message=task_query)
-        DREAMS = []
-        DREAMS.append(agent_work_flow.agent_history[-1]["message"]["content"])
-    return "done"
-
-@app.get('/dreams_get')
-def dreams_get():
-    DREAMS_get = []
-    time.sleep(10)
-    #for i in DREAMS:
-    #    if i == 'TERMINATE':
-    #        DREAMS.remove(i)
-    #if "TERMINATE" in DREAMS: DREAMS.remove("TERMINATE")
 
     for i, x in enumerate(agent_work_flow.agent_history):
         DREAMS_get.append(agent_work_flow.agent_history[i]["message"]["content"])
