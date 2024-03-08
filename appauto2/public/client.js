@@ -42,9 +42,18 @@ $(function() {
         
       });
     })
+})
+
+$(document).on('click','#workflow',function(){
+  var num_ag = $("#num_agents").val();
+  console.log(num_ag);
+  $.post('/workflow?' + $.param(
+    {'newworkflow': "hello test",
+    'num_ag': num_ag
+
+}));
   
-  
 
+});
 
-
-})});
+});

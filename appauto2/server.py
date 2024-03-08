@@ -1,28 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#       _                              
-#      | |                             
-#    __| |_ __ ___  __ _ _ __ ___  ___ 
-#   / _` | '__/ _ \/ _` | '_ ` _ \/ __|
-#  | (_| | | |  __/ (_| | | | | | \__ \
-#   \__,_|_|  \___|\__,_|_| |_| |_|___/ .
-#
 # A 'Fog Creek'–inspired demo by Kenneth Reitz™
 
 import os
-os.system('pip install flask[async]')
+os.system('pip install flask')
 #os.system('pip install dotenv')
 os.system('pip install autogenstudio')
 from flask import Flask, request, render_template, jsonify
 import test
-from dotenv import load_dotenv, find_dotenv
 #from autogen import AssistantAgent, UserProxyAgent, config_list_from_json
 import json
 from autogenstudio import AutoGenWorkFlowManager
 from autogenstudio import AgentWorkFlowConfig
-import time
-import asyncio
+
 
 
 
@@ -41,9 +32,6 @@ app.secret = os.environ.get('SECRET')
 # Dream database. Store dreams in memory for now. 
 #DREAMS = ['Python. Python, everywhere.']
 
-@app.route('/workflow')
-def run_workflow():
-    return None
 
 
 @app.after_request
@@ -107,10 +95,46 @@ def dreams():
     # Return the list of remembered dreams. 
     return jsonify(DREAMS_get)
 
-#load config file and replace text with key information
+@app.route('/workflow', methods=['POST'])
+def workflow():
+    if 'num_ag' in request.args:
+        print('request args', request.args['num_ag'])
+    
+    #load config file and replace text with key information
+    text = None
+    text2 = None
+    with open('appauto2/configlist.json') as r:
+        text = r.read().replace("<OPEN_API_KEY>", os.environ.get('OPEN_API_KEY'))
+    with open('appauto2/configlist.json') as r:
+        text2 = r.read().replace("<OPEN_API_KEY>", "<OPEN_API_KEY>")
+
+    newdict = json.loads(text)
+    #print("This", type(newdict['receiver']['groupchat_config']['agents']), newdict['receiver']['groupchat_config']['agents'])
+    #newdict['receiver']['groupchat_config']['agents'] = newdict['receiver']['groupchat_config']['agents'][0]
+    list_ag = newdict['receiver']['groupchat_config']['agents']
+    print("type", type(list_ag))
+    first_ag = list_ag[0]
+    newdict['receiver']['groupchat_config']['agents'] = [first_ag] * int(request.args['num_ag'])
+    newdict = json.dumps(newdict)
+    # load an agent specification in JSON
+    agent_spec = json.loads(newdict)
+
+    # Create an AutoGen Workflow Configuration from the agent specification
+    agent_work_flow_config = AgentWorkFlowConfig(**agent_spec)
+
+    # Create a Workflow from the configuration
+    agent_work_flow = AutoGenWorkFlowManager(agent_work_flow_config)
+
+    # Run the workflow on a task
+    #task_query = "What is the height of the Eiffel Tower?"
+    #agent_work_flow.run(message=task_query)
+    return "done"
+
+
 text = None
+
 with open('appauto2/configlist.json') as r:
-  text = r.read().replace("<OPEN_API_KEY>", os.environ.get('OPEN_API_KEY'))
+    text = r.read().replace("<OPEN_API_KEY>", os.environ.get('OPEN_API_KEY'))
 
 # load an agent specification in JSON
 agent_spec = json.loads(text)
@@ -120,10 +144,6 @@ agent_work_flow_config = AgentWorkFlowConfig(**agent_spec)
 
 # Create a Workflow from the configuration
 agent_work_flow = AutoGenWorkFlowManager(agent_work_flow_config)
-
-# Run the workflow on a task
-#task_query = "What is the height of the Eiffel Tower?"
-#agent_work_flow.run(message=task_query)
 
 if __name__ == '__main__':
     app.run()

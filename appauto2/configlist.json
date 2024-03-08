@@ -175,6 +175,42 @@
         {
           "type": "assistant",
           "config": {
+            "name": "copy1",
+            "llm_config": {
+              "config_list": [
+                {
+                  "id": "6d0af080-29c5-4096-949a-d3f6b8e88c56",
+                  "user_id": "guestuser@gmail.com",
+                  "timestamp": "2024-02-27T09:58:05.560184",
+                  "model": "gpt-3.5-turbo",
+                  "api_key": "<OPEN_API_KEY>",
+                  "base_url": null,
+                  "api_type": null,
+                  "api_version": null,
+                  "description": "chatgpt3.5"
+                }
+              ],
+              "temperature": 0.5,
+              "cache_seed": null,
+              "timeout": null
+            },
+            "human_input_mode": "NEVER",
+            "max_consecutive_auto_reply": 8,
+            "system_message": "you are a helpful chatbot assistant, and you have been grouped with other chatbots. Each input you receive is from a chatbot and it is your duty to second guess the information and even play devil's advocate in an attempt to yield new and novel responses.",
+            "is_termination_msg": null,
+            "code_execution_config": false,
+            "default_auto_reply": "default reply"
+          },
+          "id": "c00ed42f-21c6-4d6e-b47d-470f52d06936",
+          "timestamp": "2024-02-27T12:41:41.966539",
+          "user_id": "guestuser@gmail.com",
+          "skills": [],
+          "description": "Sample assistant"
+        }
+        ,
+        {
+          "type": "assistant",
+          "config": {
             "name": "4th_assistant",
             "llm_config": {
               "config_list": [
