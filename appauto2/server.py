@@ -97,24 +97,30 @@ def dreams():
 
 @app.route('/workflow', methods=['POST'])
 def workflow():
+    global agent_work_flow
     if 'num_ag' in request.args:
         print('request args', request.args['num_ag'])
     
     #load config file and replace text with key information
     text = None
-    text2 = None
+
     with open('appauto2/configlist.json') as r:
         text = r.read().replace("<OPEN_API_KEY>", os.environ.get('OPEN_API_KEY'))
-    with open('appauto2/configlist.json') as r:
-        text2 = r.read().replace("<OPEN_API_KEY>", "<OPEN_API_KEY>")
 
     newdict = json.loads(text)
-    #print("This", type(newdict['receiver']['groupchat_config']['agents']), newdict['receiver']['groupchat_config']['agents'])
-    #newdict['receiver']['groupchat_config']['agents'] = newdict['receiver']['groupchat_config']['agents'][0]
     list_ag = newdict['receiver']['groupchat_config']['agents']
-    print("type", type(list_ag))
     first_ag = list_ag[0]
-    newdict['receiver']['groupchat_config']['agents'] = [first_ag] * int(request.args['num_ag'])
+    new_ags = []
+    for i in range(0, int(request.args['num_ag'])):
+        new_ags.append(first_ag.copy())
+
+    for i, x  in enumerate(new_ags):
+        x['config'] = first_ag['config'].copy()
+        x['config']['name'] = "new_agent" + str(i + 1)
+  
+
+    newdict['receiver']['groupchat_config']['agents'] = new_ags
+
     newdict = json.dumps(newdict)
     # load an agent specification in JSON
     agent_spec = json.loads(newdict)
