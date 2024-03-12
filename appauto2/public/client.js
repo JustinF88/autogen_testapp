@@ -18,6 +18,8 @@ $(function() {
   $.get('/dreams_get').done(function(dreams) {
     console.log("these are the dreams" );
     console.log(dreams);
+    $('<li><b></b></li>').text(dreams[0]).appendTo('ul#dreams');
+    dreams.shift();
     dreams.forEach(function(dream) {
     $('<li></li>').text(dream).appendTo('ul#dreams');
 
@@ -30,13 +32,21 @@ $(function() {
   $('form').submit(function(event) {
     event.preventDefault();
     dream = $('input').val();
+    d = $('<li></li>');
+    d.addClass('libold');
+    d.text(dream);
+    d.appendTo('ul#dreams');
     console.log("this is the dream");
     console.log(dream);
     $.post('/dreams?' + $.param({'dream': dream})).done(function(dreams) {
       console.log("these are the dreams" );
       console.log(dreams);
+      dreams.shift();
       dreams.forEach(function(dream) {
-      $('<li></li>').text(dream).appendTo('ul#dreams');
+        d = $('<li></li>');
+        d.addClass('lireg');
+        d.text(dream);
+        d.appendTo('ul#dreams');
   
   
         

@@ -63,8 +63,13 @@ button:active {
   box-shadow: none;
 }
 
-li {
+.lireg {
   margin-bottom: 5px;
+}
+
+.libold{
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 footer {
@@ -80,3 +85,14 @@ footer > a {
 .nicejob {
   text-decoration: line-through;
 }
+
+.dreamsdiv {
+  height: 50vw;
+  width: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  background-color: lightgrey;
+}
+
+
