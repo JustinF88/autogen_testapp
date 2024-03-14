@@ -87,8 +87,8 @@ footer > a {
 }
 
 .dreamsdiv {
-  height: 50vw;
-  width: 500px;
+  height: 25vw;
+  width: 70vw;
   overflow-y: auto;
   display: flex;
   flex-direction: column-reverse;

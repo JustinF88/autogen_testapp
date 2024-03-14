@@ -13,6 +13,8 @@ import test
 import json
 from autogenstudio import AutoGenWorkFlowManager
 from autogenstudio import AgentWorkFlowConfig
+import copy
+import random
 
 
 
@@ -107,6 +109,8 @@ def workflow():
     with open('appauto2/configlist.json') as r:
         text = r.read().replace("<OPEN_API_KEY>", os.environ.get('OPEN_API_KEY'))
 
+    #loading the json config file and parsing it into a python dict, so we can copy pieces of it, and paste them
+    #to generate multiple agents 
     newdict = json.loads(text)
     list_ag = newdict['receiver']['groupchat_config']['agents']
     first_ag = list_ag[0]
@@ -115,12 +119,15 @@ def workflow():
         new_ags.append(first_ag.copy())
 
     for i, x  in enumerate(new_ags):
-        x['config'] = first_ag['config'].copy()
+        subj = ['art', 'biological science', 'math', 'computer science', 'music', 'crafts', 'travel', 'time management', 'productivity']
+        #each agent copy is given a new deepcopy config dict, which defines its attributes
+        x['config'] = copy.deepcopy(first_ag['config'])
         x['config']['name'] = "new_agent" + str(i + 1)
+        x['config']['system_message'] = "Do not repeat what the agent before you has just said, instead try to add something insightful to it, or add a new perspective to the conversation. If the inital question has been answered and there is nothing more to add, request the groupchat_assistant end the conversation. Your answers should be focused on how the questions relates to" + str(random.choice(subj)) + "."
+        x['config']['llm_config']['temp'] = 0.2 * i
   
 
     newdict['receiver']['groupchat_config']['agents'] = new_ags
-
     newdict = json.dumps(newdict)
     # load an agent specification in JSON
     agent_spec = json.loads(newdict)
